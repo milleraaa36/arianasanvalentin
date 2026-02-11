@@ -10,7 +10,7 @@
 <style>
 body {
     margin: 0;
-    background: black;
+    background: radial-gradient(circle at center, #000 40%, #111 100%);
     color: white;
     font-family: 'Montserrat', sans-serif;
     display: flex;
@@ -19,12 +19,21 @@ body {
     height: 100vh;
     overflow: hidden;
     text-align: center;
-    animation: heartbeat 4s infinite;
 }
 
-@keyframes heartbeat {
-    0%,100% { background-color: #000; }
-    50% { background-color: #111; }
+/* Luces concierto */
+.light {
+    position: absolute;
+    width: 200px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(212,175,55,0.3) 0%, transparent 70%);
+    animation: moveLight 6s linear infinite;
+}
+
+@keyframes moveLight {
+    0% { transform: translateX(-200px) rotate(20deg); }
+    50% { transform: translateX(200px) rotate(-20deg); }
+    100% { transform: translateX(-200px) rotate(20deg); }
 }
 
 .container {
@@ -54,19 +63,33 @@ button:hover {
 }
 
 .glow {
-    box-shadow: 0 0 15px #d4af37, 0 0 30px #d4af37;
+    box-shadow: 0 0 20px #d4af37, 0 0 40px #d4af37;
 }
 
+/* Entradas animadas */
 .ticket {
-    width: 120px;
-    height: 60px;
+    width: 140px;
+    height: 70px;
     border: 2px dashed gold;
-    margin: 10px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    margin: 15px;
     color: gold;
+    transform: translateY(200px);
+    opacity: 0;
+    animation: rise 2s forwards;
+}
+
+.ticket:nth-child(2){
+    animation-delay: 0.5s;
+}
+
+@keyframes rise {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .signature {
@@ -80,20 +103,28 @@ button:hover {
 
 <body>
 
+<div class="light"></div>
+<div class="light" style="animation-delay:3s;"></div>
+
 <div class="container" id="scene">
     <h1>Ariana...</h1>
     <p>Toca para comenzar nuestra historia.</p>
     <button onclick="startExperience()">Comenzar</button>
 </div>
 
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2023/03/21/audio_5c9f5b9b6a.mp3?filename=romantic-ambient-141997.mp3">
+<audio id="bgMusic" preload="auto">
+<source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_946f0c6c6a.mp3?filename=romantic-117106.mp3">
+</audio>
+
+<audio id="applause" preload="auto">
+<source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_12b0c7443f.mp3?filename=applause-8-103169.mp3">
 </audio>
 
 <script>
 let step = 0;
 const scene = document.getElementById("scene");
-const music = document.getElementById("music");
+const music = document.getElementById("bgMusic");
+const applause = document.getElementById("applause");
 
 function daysTogether(){
     let start = new Date("2023-09-30");
@@ -101,9 +132,25 @@ function daysTogether(){
     return Math.floor((today - start)/(1000*60*60*24));
 }
 
+/* Máquina de escribir */
+function typeText(text, callback){
+    scene.innerHTML="<h1 id='type'></h1><button onclick='nextScene()'>Continuar</button>";
+    let i=0;
+    function typing(){
+        if(i<text.length){
+            document.getElementById("type").innerHTML+=text.charAt(i);
+            i++;
+            setTimeout(typing,40);
+        } else if(callback){
+            callback();
+        }
+    }
+    typing();
+}
+
 function startExperience(){
-    music.volume = 0.6;
-    music.play();
+    music.volume = 0.5;
+    music.play().catch(()=>{});
     nextScene();
 }
 
@@ -111,27 +158,15 @@ function nextScene(){
     step++;
 
     if(step===1){
-        scene.innerHTML=`
-        <h1>30/09/2023</h1>
-        <p>Bailando bachata en la universidad...</p>
-        <button onclick="nextScene()">Continuar</button>
-        `;
+        typeText("30/09/2023 - Bailamos bachata por primera vez...");
     }
 
     else if(step===2){
-        scene.innerHTML=`
-        <h1>Han pasado ${daysTogether()} días</h1>
-        <p>Desde que bailamos juntos por primera vez.</p>
-        <button onclick="nextScene()">Continuar</button>
-        `;
+        typeText("Han pasado "+daysTogether()+" días desde ese momento.");
     }
 
     else if(step===3){
-        scene.innerHTML=`
-        <h1>Aunque oficialmente fue 01/10/2024...</h1>
-        <p>Yo siempre supe que eras para mí.</p>
-        <button onclick="nextScene()">Continuar</button>
-        `;
+        typeText("Aunque oficialmente fue 01/10/2024... yo siempre supe que eras para mí.");
     }
 
     else if(step===4){
@@ -146,21 +181,20 @@ function nextScene(){
 function yes(){
     scene.innerHTML=`
     <h1>Sabía que dirías que sí 💃🖤</h1>
-    <p>Entonces prepárate para un día entero juntos este 14...</p>
-    <button onclick="revealTickets()">Hay algo más...</button>
+    <p>Prepárate...</p>
+    <button onclick="reveal()">Hay algo más...</button>
     `;
 }
 
-function revealTickets(){
+function reveal(){
+    applause.play();
     scene.innerHTML=`
     <h1>Sorpresa 🎟️</h1>
-    <p>En septiembre no solo bailaremos...</p>
     <div>
         <div class="ticket">Entrada 1<br>Romeo & Royce</div>
         <div class="ticket">Entrada 2<br>Romeo & Royce</div>
     </div>
-    <p>Con amor...</p>
-    <div class="signature">Miller</div>
+    <div class="signature">Con amor, Miller</div>
     `;
 }
 </script>
