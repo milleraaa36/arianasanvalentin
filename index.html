@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Desde Que Bailamos</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Great+Vibes&family=Montserrat:wght@300&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -19,6 +19,12 @@ body {
     height: 100vh;
     overflow: hidden;
     text-align: center;
+    animation: heartbeat 4s infinite;
+}
+
+@keyframes heartbeat {
+    0%,100% { background-color: #000; }
+    50% { background-color: #111; }
 }
 
 .container {
@@ -30,11 +36,10 @@ body {
 h1 {
     font-family: 'Cinzel', serif;
     color: #d4af37;
-    font-size: 2rem;
 }
 
 button {
-    margin-top: 30px;
+    margin-top: 25px;
     padding: 12px 30px;
     border: 2px solid #d4af37;
     background: transparent;
@@ -48,32 +53,27 @@ button:hover {
     color: black;
 }
 
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    animation: twinkle 2s infinite alternate;
+.glow {
+    box-shadow: 0 0 15px #d4af37, 0 0 30px #d4af37;
 }
 
-@keyframes twinkle {
-    from {opacity: 0.2;}
-    to {opacity: 1;}
+.ticket {
+    width: 120px;
+    height: 60px;
+    border: 2px dashed gold;
+    margin: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: gold;
 }
 
-.petal {
-    position: absolute;
-    width: 8px;
-    height: 12px;
-    background: gold;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall linear infinite;
-}
-
-@keyframes fall {
-    0% {transform: translateY(-10vh) rotate(0deg);}
-    100% {transform: translateY(110vh) rotate(360deg);}
+.signature {
+    font-family: 'Great Vibes', cursive;
+    font-size: 28px;
+    margin-top: 30px;
+    color: #d4af37;
 }
 </style>
 </head>
@@ -81,13 +81,13 @@ button:hover {
 <body>
 
 <div class="container" id="scene">
-    <h1>Toca la pantalla…</h1>
-    <p>Y revive nuestra historia.</p>
+    <h1>Ariana...</h1>
+    <p>Toca para comenzar nuestra historia.</p>
     <button onclick="startExperience()">Comenzar</button>
 </div>
 
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9b0e1a.mp3?filename=romantic-background-110382.mp3">
+  <source src="https://cdn.pixabay.com/download/audio/2023/03/21/audio_5c9f5b9b6a.mp3?filename=romantic-ambient-141997.mp3">
 </audio>
 
 <script>
@@ -95,56 +95,14 @@ let step = 0;
 const scene = document.getElementById("scene");
 const music = document.getElementById("music");
 
-// Estrellas
-for(let i=0;i<120;i++){
-    let star = document.createElement("div");
-    star.className="star";
-    star.style.top=Math.random()*100+"vh";
-    star.style.left=Math.random()*100+"vw";
-    star.style.animationDuration=(Math.random()*2+1)+"s";
-    document.body.appendChild(star);
-}
-
-// Pétalos dorados
-function createPetals(){
-    for(let i=0;i<25;i++){
-        let petal=document.createElement("div");
-        petal.className="petal";
-        petal.style.left=Math.random()*100+"vw";
-        petal.style.animationDuration=(Math.random()*5+5)+"s";
-        document.body.appendChild(petal);
-    }
-}
-
-// Máquina de escribir
-function typeWriter(text, callback){
-    scene.innerHTML="<h1></h1><p></p><button onclick='nextScene()'>Continuar</button>";
-    let h=scene.querySelector("h1");
-    let p=scene.querySelector("p");
-    let i=0;
-    function typing(){
-        if(i<text.length){
-            if(text[i]=="|"){h.innerHTML+="<br>";}
-            else{h.innerHTML+=text[i];}
-            i++;
-            setTimeout(typing,40);
-        }else{
-            p.innerHTML=" ";
-            if(callback)callback();
-        }
-    }
-    typing();
-}
-
-// Contador
 function daysTogether(){
     let start = new Date("2023-09-30");
     let today = new Date();
-    let diff = today - start;
-    return Math.floor(diff / (1000*60*60*24));
+    return Math.floor((today - start)/(1000*60*60*24));
 }
 
 function startExperience(){
+    music.volume = 0.6;
     music.play();
     nextScene();
 }
@@ -153,39 +111,56 @@ function nextScene(){
     step++;
 
     if(step===1){
-        typeWriter("Ariana...|Todo comenzó el 30/09/2023",null);
-    }
-
-    else if(step===2){
-        typeWriter("Han pasado "+daysTogether()+" días|desde que bailamos juntos.",null);
-    }
-
-    else if(step===3){
-        typeWriter("Aunque oficialmente fue el 01/10/2024...|Yo siempre supe que eras para mí.",null);
-    }
-
-    else if(step===4){
         scene.innerHTML=`
-        <h1>Este septiembre...</h1>
-        <p>Romeo Santos & Prince Royce 🎟️</p>
+        <h1>30/09/2023</h1>
+        <p>Bailando bachata en la universidad...</p>
         <button onclick="nextScene()">Continuar</button>
         `;
     }
 
-    else if(step===5){
+    else if(step===2){
+        scene.innerHTML=`
+        <h1>Han pasado ${daysTogether()} días</h1>
+        <p>Desde que bailamos juntos por primera vez.</p>
+        <button onclick="nextScene()">Continuar</button>
+        `;
+    }
+
+    else if(step===3){
+        scene.innerHTML=`
+        <h1>Aunque oficialmente fue 01/10/2024...</h1>
+        <p>Yo siempre supe que eras para mí.</p>
+        <button onclick="nextScene()">Continuar</button>
+        `;
+    }
+
+    else if(step===4){
         scene.innerHTML=`
         <h1>Ariana...</h1>
-        <p>¿Quieres ser mi San Valentín este 14 de febrero?</p>
-        <button onclick="yes()">Sí 💛</button>
+        <p>¿Quieres salir conmigo este 14 de febrero como mi San Valentín?</p>
+        <button class="glow" onclick="yes()">Sí 💛</button>
         `;
     }
 }
 
 function yes(){
-    createPetals();
     scene.innerHTML=`
     <h1>Sabía que dirías que sí 💃🖤</h1>
-    <p>Prepárate para septiembre… y para toda una vida bailando conmigo.</p>
+    <p>Entonces prepárate para un día entero juntos este 14...</p>
+    <button onclick="revealTickets()">Hay algo más...</button>
+    `;
+}
+
+function revealTickets(){
+    scene.innerHTML=`
+    <h1>Sorpresa 🎟️</h1>
+    <p>En septiembre no solo bailaremos...</p>
+    <div>
+        <div class="ticket">Entrada 1<br>Romeo & Royce</div>
+        <div class="ticket">Entrada 2<br>Romeo & Royce</div>
+    </div>
+    <p>Con amor...</p>
+    <div class="signature">Miller</div>
     `;
 }
 </script>
