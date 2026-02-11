@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desde Que Bailamos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(to bottom, #000000, #111111);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+h1, h2 {
+    font-family: 'Playfair Display', serif;
+    color: #d4af37;
+}
+
+button {
+    background: transparent;
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+button:hover {
+    background: #d4af37;
+    color: black;
+}
+
+.fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 1.5s ease;
+}
+
+.fade.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+img {
+    width: 250px;
+    margin-top: 20px;
+    border-radius: 10px;
+    opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+
+<section class="fade">
+<h1>Ariana</h1>
+<h2>Todo empezó el 30 de septiembre del 2023</h2>
+<p>Bailando bachata en la universidad…</p>
+<img src="https://images.unsplash.com/photo-1520975918318-3a0eaf2d6b06?auto=format&fit=crop&w=600&q=80">
+</section>
+
+<section class="fade">
+<h2>Dicen que empezamos el 01/10/2024…</h2>
+<p>Pero yo siempre supe que éramos novios desde que te conocí.</p>
+</section>
+
+<section class="fade">
+<h2>Desde entonces...</h2>
+<p>No importa cuántas veces bailemos,  
+siempre quiero que sea contigo.</p>
+</section>
+
+<section class="fade">
+<h2>Este 14 de febrero...</h2>
+<p>No solo quiero que seas mi San Valentín.</p>
+<p>Quiero seguir escribiendo nuestra historia.</p>
+<button onclick="mostrarFinal()">Descubrir sorpresa</button>
+</section>
+
+<section id="final" style="display:none;">
+<h2>💛 ¿Quieres ser mi San Valentín? 💛</h2>
+<p>Y prepararte para cantar juntos en septiembre…</p>
+<h1>Romeo Santos & Prince Royce 🎟️</h1>
+<button onclick="celebrar()">Sí, mi bachatero 💃</button>
+</section>
+
+<script>
+const faders = document.querySelectorAll('.fade');
+
+const appearOptions = {
+  threshold: 0.3
+};
+
+const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      return;
+    } else {
+      entry.target.classList.add('show');
+      appearOnScroll.unobserve(entry.target);
+    }
+  });
+}, appearOptions);
+
+faders.forEach(fader => {
+  appearOnScroll.observe(fader);
+});
+
+function mostrarFinal() {
+    document.getElementById("final").style.display = "flex";
+}
+
+function celebrar() {
+    alert("Sabía que dirías que sí. Prepárate para septiembre 💃🖤");
+}
+</script>
+
+</body>
+</html>
